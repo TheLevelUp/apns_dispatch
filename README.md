@@ -1,6 +1,6 @@
 # ApnsDispatch
 
-A simple Ruby framework for sending push notifications and receving feedback using the Apple Push Nofitication service
+A simple Ruby framework for sending push notifications and receiving feedback using the Apple Push Notification service
 
 ## Installation
 

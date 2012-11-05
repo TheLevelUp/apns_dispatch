@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
   gem.authors       = ['Costa Walcott']
   gem.email         = ['costa@scvngr.com']
   gem.summary       = 'A simple Ruby framework for communicating with the APNs'
-  gem.description   = 'A simple Ruby framework for sending push notifications and receving feedback using the Apple Push Nofitication service'
+  gem.description   = 'A simple Ruby framework for sending push notifications and receiving feedback using the Apple Push Notification service'
   gem.homepage      = 'http://github.com/TheLevelUp/apns_dispatch'
 
   gem.files         = `git ls-files`.split($/)
