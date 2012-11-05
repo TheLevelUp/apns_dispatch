@@ -15,6 +15,8 @@ Gem::Specification.new do |gem|
   gem.files         = `git ls-files`.split($/)
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
 
+  gem.add_dependency 'json', '~> 1.7.5'
+
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec', '~> 2.0'
 

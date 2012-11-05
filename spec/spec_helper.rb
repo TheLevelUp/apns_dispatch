@@ -1,5 +1,4 @@
-$LOAD_PATH << File.join(File.dirname(__FILE__), '..', 'lib')
-$LOAD_PATH << File.join(File.dirname(__FILE__))
+require 'rubygems'
+require 'bundler/setup'
 
-require 'rspec'
 require 'apns_dispatch'
