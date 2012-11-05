@@ -1,6 +1,6 @@
 # ApnsDispatch
 
-TODO: Write a gem description
+A simple Ruby framework for sending push notifications and receving feedback using the Apple Push Nofitication service
 
 ## Installation
 
@@ -20,10 +20,7 @@ Or install it yourself as:
 
 TODO: Write usage instructions here
 
-## Contributing
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+## License
+
+`column_cryptor` is written by Costa Walcott, and is Copyright 2012 SCVNGR, Inc. It is free software, and may be redistributed under the terms specified in the MIT-LICENSE file.
