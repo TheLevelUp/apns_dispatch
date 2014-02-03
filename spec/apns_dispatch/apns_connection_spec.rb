@@ -21,21 +21,33 @@ describe ApnsDispatch::ApnsConnection do
       @apns_connection.send command, argument
     end
 
-    it 'retries once' do
-      @ssl.should_receive(command).with(argument).twice.and_return do
-        unless @run
-          @run = true
-          raise OpenSSL::SSL::SSLError
-        end
-      end
-
-      @apns_connection.send command, argument
-    end
-
     it 'uses the correct host and port' do
       TCPSocket.should_receive(:new).with(@apns_connection.host, @apns_connection.port)
 
       @apns_connection.send command, argument
+    end
+
+    context 'when the connection throws an error' do
+      before do
+        @ssl.stub(command).with(argument).and_return do
+          unless @run
+            @run = true
+            raise OpenSSL::SSL::SSLError
+          end
+        end
+      end
+
+      it 'retries once' do
+        @ssl.should_receive(command).with(argument).twice
+
+        @apns_connection.send command, argument
+      end
+
+      it 'reconnects before retrying' do
+        OpenSSL::SSL::SSLSocket.should_receive(:new).twice
+
+        @apns_connection.send command, argument
+      end
     end
 
     context 'when there is no connection' do

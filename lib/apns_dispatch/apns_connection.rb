@@ -1,4 +1,5 @@
 require 'openssl'
+require 'retryable'
 require 'socket'
 
 module ApnsDispatch
@@ -77,23 +78,17 @@ module ApnsDispatch
       connect!
     end
 
-    def with_connection
+    def retryable_errors
+      [Errno::EPIPE, OpenSSL::SSL::SSLError]
+    end
+
+    def with_connection(&block)
       unless connected?
         connect!
       end
 
-      attempted = false
-
-      begin
-        if block_given?
-          yield
-        end
-      rescue Errno::EPIPE, OpenSSL::SSL::SSLError
-        unless attempted
-          reconnect!
-          attempted = true
-          retry
-        end
+      retryable exception_cb: lambda { |e| reconnect! }, on: retryable_errors, sleep: 0, tries: 2 do
+        yield
       end
     end
   end
