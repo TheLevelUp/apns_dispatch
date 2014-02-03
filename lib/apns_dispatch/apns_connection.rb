@@ -79,7 +79,7 @@ module ApnsDispatch
     end
 
     def retryable_errors
-      [Errno::EPIPE, OpenSSL::SSL::SSLError]
+      [Errno::EPIPE, Errno::ETIMEDOUT, OpenSSL::SSL::SSLError]
     end
 
     def with_connection(&block)
