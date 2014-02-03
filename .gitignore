@@ -1,10 +1,12 @@
+*.sw?
 *.gem
 *.rbc
 .bundle
 .config
 .rvmrc
+.ruby-gemset
+.ruby-version
 .yardoc
-Gemfile.lock
 InstalledFiles
 _yardoc
 coverage
