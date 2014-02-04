@@ -23,13 +23,14 @@ module ApnsDispatch
       0
     end
 
+    def default_aps_message
+      { alert: @message, sound: 'default' }
+    end
+
     def message_information
-      {
-        aps: {
-          alert: @message,
-          sound: 'default'
-        }
-      }
+      @options.dup.tap do |message|
+        message[:aps] = default_aps_message.merge(message[:aps] || {})
+      end
     end
 
     def notification_packet
@@ -37,7 +38,7 @@ module ApnsDispatch
     end
 
     def payload
-      message_information.merge(@options).to_json
+      message_information.to_json
     end
   end
 end
