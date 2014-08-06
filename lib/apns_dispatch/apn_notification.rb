@@ -11,9 +11,38 @@ module ApnsDispatch
 
     def send_notification
       @connection.write notification_packet
+      status, identifier = read_status(@connection)
+      if status && status == 0
+        return true
+      else
+        # Assume all errors have the possibility of poisoning a connection
+        @connection.disconnect!
+        return false
+      end
     end
 
     private
+
+    STATUS_PACKET_SIZE = 6
+    # Constant value returned by APNS. See: https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/CommunicatingWIthAPS.html
+    STATUS_PACKET_COMMAND = 8
+    # Command, Status code, Notification Identifier
+    STATUS_PACKET_FORMAT = 'CCN'
+
+    def read_status(connection)
+      packet = connection.read(STATUS_PACKET_SIZE)
+      if !packet
+        # Timeout or some other socket error.
+        return nil, nil
+      end
+
+      command, status, identifier = packet.unpack(STATUS_PACKET_FORMAT)
+      if command.to_i != STATUS_PACKET_COMMAND
+        # APNS format has changed in some way. Fail fast.
+        raise(ArgumentError, "APNS Return Command Constant Incorrect: #{command}")
+      end
+      return status.to_i, identifier
+    end
 
     def binary_token
       [@token].pack 'H*'
