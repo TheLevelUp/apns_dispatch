@@ -38,7 +38,10 @@ module ApnsDispatch
     end
 
     def payload
-      message_information.to_json
+      # strip out nil values in :aps and root space to save bytes
+      Hash[message_information.reject { |k,v| v.nil? }.map do |k,v|
+        [k, v.kind_of?(Hash) ? v.reject { |k,v| v.nil? } : v]
+      end].to_json
     end
   end
 end
