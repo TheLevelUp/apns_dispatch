@@ -12,6 +12,7 @@ module ApnsDispatch
     GATEWAY_PORT = 2195
     PRODUCTION_FEEDBACK_HOST = 'feedback.push.apple.com'
     PRODUCTION_GATEWAY_HOST = 'gateway.push.apple.com'
+    RETRYABLE_ERRORS = [Errno::EPIPE, Errno::ETIMEDOUT, OpenSSL::SSL::SSLError]
     SANDBOX_FEEDBACK_HOST = 'feedback.sandbox.push.apple.com'
     SANDBOX_GATEWAY_HOST = 'gateway.sandbox.push.apple.com'
 
@@ -39,6 +40,7 @@ module ApnsDispatch
 
       @certificate = certificate
       @options = options
+      @mutex = Mutex.new
     end
 
     def read(length)
@@ -78,17 +80,15 @@ module ApnsDispatch
       connect!
     end
 
-    def retryable_errors
-      [Errno::EPIPE, Errno::ETIMEDOUT, OpenSSL::SSL::SSLError]
-    end
-
     def with_connection(&block)
-      unless connected?
-        connect!
-      end
+      @mutex.synchronize do
+        unless connected?
+          connect!
+        end
 
-      retryable exception_cb: lambda { |e| reconnect! }, on: retryable_errors, sleep: 0, tries: 2 do
-        yield
+        retryable exception_cb: lambda { |e| reconnect! }, on: RETRYABLE_ERRORS, sleep: 0, tries: 2 do
+          yield
+        end
       end
     end
   end
