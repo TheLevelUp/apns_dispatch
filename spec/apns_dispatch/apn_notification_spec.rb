@@ -8,7 +8,7 @@ describe ApnsDispatch::ApnNotification do
     @connection = stub
     @apn_notificiation = ApnsDispatch::ApnNotification.new(@connection, token, message, options)
 
-    expected_message = { aps: { alert: message, sound: 'default', badge: 1}, order_id: 1}
+    expected_message = { aps: { alert: message, sound: 'default', badge: 1 }, order_id: 1 }
     payload = expected_message.to_json
     @packet = [0, 32, [token].pack('H*'), payload.bytesize, payload].pack('cna*na*')
   end

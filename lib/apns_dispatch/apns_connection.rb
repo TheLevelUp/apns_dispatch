@@ -80,15 +80,18 @@ module ApnsDispatch
       connect!
     end
 
+    def retryable(&block)
+      options = { exception_cb: lambda { |e| reconnect! }, on: RETRYABLE_ERRORS, sleep: 0, tries: 2 }
+      Retryable.retryable(options) { yield }
+    end
+
     def with_connection(&block)
       @mutex.synchronize do
         unless connected?
           connect!
         end
 
-        retryable exception_cb: lambda { |e| reconnect! }, on: RETRYABLE_ERRORS, sleep: 0, tries: 2 do
-          yield
-        end
+        retryable { yield }
       end
     end
   end

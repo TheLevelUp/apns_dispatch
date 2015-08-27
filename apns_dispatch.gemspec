@@ -16,7 +16,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
 
   gem.add_dependency 'json', '~> 1.8.1'
-  gem.add_dependency 'retryable', '~> 1.3.5'
+  gem.add_dependency 'retryable', '~> 2.0.2'
 
   gem.add_development_dependency 'rake'
   gem.add_development_dependency 'rspec', '~> 2.13.0'

@@ -2,6 +2,9 @@ module ApnsDispatch
   # Creates a packaged notification for the APNs. Based on code from https://github.com/jpoz/APNS.
 
   class ApnNotification
+    # Constants
+    COMMAND = 0
+
     def initialize(connection, token, message, options = {})
       @connection = connection
       @token = token
@@ -16,15 +19,11 @@ module ApnsDispatch
     private
 
     def binary_token
-      [@token].pack 'H*'
-    end
-
-    def command
-      0
+      [@token].pack 'H*'.freeze
     end
 
     def default_aps_message
-      { alert: @message, sound: 'default' }
+      { alert: @message, sound: 'default'.freeze }
     end
 
     def message_information
@@ -34,7 +33,8 @@ module ApnsDispatch
     end
 
     def notification_packet
-      [command, binary_token.bytesize, binary_token, payload.bytesize, payload].pack 'cna*na*'
+      [COMMAND, binary_token.bytesize, binary_token, payload.bytesize, payload].
+        pack 'cna*na*'.freeze
     end
 
     def payload
