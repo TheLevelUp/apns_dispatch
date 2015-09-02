@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    apns_dispatch (1.0.2)
+    apns_dispatch (1.0.3)
       json (~> 1.8.1)
       retryable (~> 2.0.2)
 
