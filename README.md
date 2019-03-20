@@ -1,3 +1,5 @@
+**This project is unmaintained.** We recommend using a library compatible with Apple's newer [HTTP/2-based API](https://developer.apple.com/library/archive/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/CommunicatingwithAPNs.html#//apple_ref/doc/uid/TP40008194-CH11-SW1), such as [apnotic](https://github.com/ostinelli/apnotic).
+
 # ApnsDispatch
 
 A simple Ruby framework for sending push notifications and receiving feedback using the Apple Push Notification service
